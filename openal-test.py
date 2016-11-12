@@ -75,8 +75,14 @@ class WaveStream(object):
 
 def load_wav():
     wave_file = 'C:\Users\Markus\Downloads\CHVRCHES - Leave A Trace (Goldroom Remix).wav'
+    # wave_file = 'C:\Users\Markus\Downloads\CHVRCHES - Clearest Blue (Gryffin Remix) Premiere.wav'
     wav = WaveStream(wave_file)
     data = wav.read_frames(wav.num_frames)
+
+    # convert to float array for processing
+    assert wav.bit_rate == 16
+    inputs = np.array(struct.unpack('%ih' % wav.num_frames, data)).astype(np.float32) / 32768.
+
     return wav.sample_rate, wav.format, data
 
 
@@ -84,10 +90,6 @@ def main():
     rate, format, data = load_wav()
     sample_len = len(data)
     both_channels = data
-
-    #samples = struct.unpack('%ih' % (sample_len/2), data)
-    #left_channel = struct.pack('%ih' % (sample_len/4), *samples[0::2])
-    #right_channel = struct.pack('%ih' % (sample_len/4), *samples[1::2])
 
     # let OpenAL select the audio device
     device = alc.alcOpenDevice(None)
@@ -115,7 +117,6 @@ def main():
     # audio buffer
     buffer = al.ALuint()
     al.alGenBuffers(1, buffer)
-    #al.alBufferData(buffer, al.AL_FORMAT_MONO16, left_channel, sample_len/2, rate)
     al.alBufferData(buffer, format, both_channels, sample_len, rate)
 
     # binding the source to the buffer

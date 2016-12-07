@@ -1,12 +1,8 @@
-#from openal import al, alc
 import struct
-
-import itertools
 from pyglet.media.drivers.openal import lib_openal as al
 from pyglet.media.drivers.openal import lib_alc as alc
 import wave
 import numpy as np
-import ctypes
 
 
 class WaveStream(object):
@@ -74,8 +70,8 @@ class WaveStream(object):
 
 
 def load_wav():
-    wave_file = 'C:\Users\Markus\Downloads\CHVRCHES - Leave A Trace (Goldroom Remix).wav'
-    # wave_file = 'C:\Users\Markus\Downloads\CHVRCHES - Clearest Blue (Gryffin Remix) Premiere.wav'
+    wave_file = 'CHVRCHES - Leave A Trace (Goldroom Remix).wav'
+    # wave_file = 'CHVRCHES - Clearest Blue (Gryffin Remix) Premiere.wav'
     wav = WaveStream(wave_file)
     data = wav.read_frames(wav.num_frames)
 
